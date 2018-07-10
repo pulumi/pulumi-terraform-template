@@ -1,0 +1,3 @@
+name: terraform-template
+description: A Pulumi resource provider for terraform-template.
+language: python

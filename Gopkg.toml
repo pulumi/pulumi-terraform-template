@@ -1,0 +1,11 @@
+[[override]]
+  name = "github.com/pulumi/pulumi"
+  branch = "master"
+
+[[override]]
+  name = "github.com/pulumi/pulumi-terraform"
+  branch = "master"
+
+[[override]]
+  name = "github.com/pulumi/terraform"
+  branch = "pulumi-master"

@@ -1,0 +1,25 @@
+{
+    "name": "@pulumi/terraform-template",
+    "version": "${VERSION}",
+    "description": "A Pulumi package for creating and managing Terraform template resources.",
+    "keywords": [
+        "pulumi",
+        "terraform",
+        "template"
+    ],
+    "homepage": "https://pulumi.io/terraform-template",
+    "repository": "https://github.com/pulumi/pulumi-terraform-template",
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^0.14.0"
+    },
+    "devDependencies": {
+        "@types/node": "^8.0.25",
+        "typescript": "^2.6.2"
+    },
+    "pulumi": {
+        "resource": true
+    }
+}
