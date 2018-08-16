@@ -52,8 +52,8 @@ export class Dir extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: DirArgs, opts?: pulumi.ResourceOptions)
-    constructor(name: string, argsOrState?: DirArgs | DirState, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args: DirArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: DirArgs | DirState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: DirState = argsOrState as DirState | undefined;

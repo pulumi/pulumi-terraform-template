@@ -28,6 +28,6 @@ setup(name='pulumi_terraform-template',
       },
       packages=find_packages(),
       install_requires=[
-          'pulumi>=0.14.2,<0.15.0'
+          'pulumi>=0.15.0,<0.16.0'
       ],
       zip_safe=False)

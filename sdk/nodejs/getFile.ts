@@ -6,13 +6,13 @@ import * as pulumi from "@pulumi/pulumi";
 /**
  * Renders a template from a file.
  */
-export function getFile(args?: GetFileArgs): Promise<GetFileResult> {
+export function getFile(args?: GetFileArgs, opts?: pulumi.InvokeOptions): Promise<GetFileResult> {
     args = args || {};
     return pulumi.runtime.invoke("terraform-template:index/getFile:getFile", {
         "filename": args.filename,
         "template": args.template,
         "vars": args.vars,
-    });
+    }, opts);
 }
 
 /**
@@ -24,19 +24,19 @@ export interface GetFileArgs {
      * the template. Use [path variables](/docs/configuration/interpolation.html#path-variables) to make
      * this path relative to different path roots.
      */
-    readonly filename?: pulumi.Input<string>;
+    readonly filename?: string;
     /**
      * The contents of the template. These can be loaded
      * from a file on disk using the [`file()` interpolation
      * function](/docs/configuration/interpolation.html#file_path_).
      */
-    readonly template?: pulumi.Input<string>;
+    readonly template?: string;
     /**
      * Variables for interpolation within the template. Note
      * that variables must all be primitives. Direct references to lists or maps
      * will cause a validation error.
      */
-    readonly vars?: pulumi.Input<{[key: string]: any}>;
+    readonly vars?: {[key: string]: any};
 }
 
 /**

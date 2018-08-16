@@ -7,3 +7,4 @@ export * from "./dir";
 export * from "./file";
 export * from "./getCloudInitConfig";
 export * from "./getFile";
+export * from "./provider";

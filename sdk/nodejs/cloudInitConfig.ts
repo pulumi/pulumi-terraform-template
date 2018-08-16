@@ -31,8 +31,8 @@ export class CloudInitConfig extends pulumi.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: CloudInitConfigArgs, opts?: pulumi.ResourceOptions)
-    constructor(name: string, argsOrState?: CloudInitConfigArgs | CloudInitConfigState, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args: CloudInitConfigArgs, opts?: pulumi.CustomResourceOptions)
+    constructor(name: string, argsOrState?: CloudInitConfigArgs | CloudInitConfigState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
             const state: CloudInitConfigState = argsOrState as CloudInitConfigState | undefined;
@@ -60,7 +60,7 @@ export class CloudInitConfig extends pulumi.CustomResource {
 export interface CloudInitConfigState {
     readonly base64Encode?: pulumi.Input<boolean>;
     readonly gzip?: pulumi.Input<boolean>;
-    readonly parts?: pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }[]>;
+    readonly parts?: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }>[]>;
     /**
      * rendered cloudinit configuration
      */
@@ -73,5 +73,5 @@ export interface CloudInitConfigState {
 export interface CloudInitConfigArgs {
     readonly base64Encode?: pulumi.Input<boolean>;
     readonly gzip?: pulumi.Input<boolean>;
-    readonly parts: pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }[]>;
+    readonly parts: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }>[]>;
 }

@@ -72,12 +72,12 @@ func Provider() tfbridge.ProviderInfo {
 		Homepage:    "https://pulumi.io/terraform-template",
 		Repository:  "https://github.com/pulumi/pulumi-terraform-template",
 		Resources: map[string]*tfbridge.ResourceInfo{
-			"template_file": {Tok: templateResource(templateMod, "File")},
+			"template_file":             {Tok: templateResource(templateMod, "File")},
 			"template_cloudinit_config": {Tok: templateResource(templateMod, "CloudInitConfig")},
-			"template_dir": {Tok: templateResource(templateMod, "Dir")},
+			"template_dir":              {Tok: templateResource(templateMod, "Dir")},
 		},
 		DataSources: map[string]*tfbridge.DataSourceInfo{
-			"template_file": {Tok: templateDataSource(templateMod, "getFile")},
+			"template_file":             {Tok: templateDataSource(templateMod, "getFile")},
 			"template_cloudinit_config": {Tok: templateDataSource(templateMod, "getCloudInitConfig")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
@@ -85,12 +85,12 @@ func Provider() tfbridge.ProviderInfo {
 				"@types/node": "^8.0.25", // so we can access strongly typed node definitions.
 			},
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^0.14.0",
+				"@pulumi/pulumi": "^0.15.0",
 			},
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=0.14.2,<0.15.0",
+				"pulumi": ">=0.15.0,<0.16.0",
 			},
 		},
 	}
