@@ -6,12 +6,12 @@ import * as pulumi from "@pulumi/pulumi";
 /**
  * Renders a multi-part cloud-init config from source files.
  */
-export function getCloudInitConfig(args: GetCloudInitConfigArgs): Promise<GetCloudInitConfigResult> {
+export function getCloudInitConfig(args: GetCloudInitConfigArgs, opts?: pulumi.InvokeOptions): Promise<GetCloudInitConfigResult> {
     return pulumi.runtime.invoke("terraform-template:index/getCloudInitConfig:getCloudInitConfig", {
         "base64Encode": args.base64Encode,
         "gzip": args.gzip,
         "parts": args.parts,
-    });
+    }, opts);
 }
 
 /**
@@ -21,15 +21,15 @@ export interface GetCloudInitConfigArgs {
     /**
      * Base64 encoding of the rendered output. Default to `true`
      */
-    readonly base64Encode?: pulumi.Input<boolean>;
+    readonly base64Encode?: boolean;
     /**
      * Specify whether or not to gzip the rendered output. Default to `true`
      */
-    readonly gzip?: pulumi.Input<boolean>;
+    readonly gzip?: boolean;
     /**
      * One may specify this many times, this creates a fragment of the rendered cloud-init config file. The order of the parts is maintained in the configuration is maintained in the rendered template.
      */
-    readonly parts: pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }[]>;
+    readonly parts: { content: string, contentType?: string, filename?: string, mergeType?: string }[];
 }
 
 /**
