@@ -9,17 +9,18 @@ import pulumi.runtime
 from typing import Union
 from . import utilities, tables
 
-class File(pulumi.CustomResource):
-    filename: pulumi.Output[str]
-    rendered: pulumi.Output[str]
-    template: pulumi.Output[str]
-    vars: pulumi.Output[dict]
-    def __init__(__self__, resource_name, opts=None, filename=None, template=None, vars=None, __props__=None, __name__=None, __opts__=None):
+class Provider(pulumi.ProviderResource):
+    def __init__(__self__, resource_name, opts=None, __props__=None, __name__=None, __opts__=None):
         """
-        Create a File resource with the given unique name, props, and options.
+        The provider type for the template package. By default, resources use package-wide configuration
+        settings, however an explicit `Provider` instance may be created and passed during resource
+        construction to achieve fine-grained programmatic control over provider settings. See the
+        [documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.
         
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/index.html.markdown.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -38,34 +39,28 @@ class File(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = dict()
 
-            __props__['filename'] = filename
-            __props__['template'] = template
-            __props__['vars'] = vars
-            __props__['rendered'] = None
-        super(File, __self__).__init__(
-            'terraform-template:index/file:File',
+        super(Provider, __self__).__init__(
+            'terraform-template',
             resource_name,
             __props__,
             opts)
 
     @staticmethod
-    def get(resource_name, id, opts=None, filename=None, rendered=None, template=None, vars=None):
+    def get(resource_name, id, opts=None):
         """
-        Get an existing File resource's state with the given name, id, and optional extra
+        Get an existing Provider resource's state with the given name, id, and optional extra
         properties used to qualify the lookup.
         
         :param str resource_name: The unique name of the resulting resource.
         :param str id: The unique provider ID of the resource to lookup.
         :param pulumi.ResourceOptions opts: Options for the resource.
+
+        > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/index.html.markdown.
         """
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
 
         __props__ = dict()
-        __props__["filename"] = filename
-        __props__["rendered"] = rendered
-        __props__["template"] = template
-        __props__["vars"] = vars
-        return File(resource_name, opts=opts, __props__=__props__)
+        return Provider(resource_name, opts=opts, __props__=__props__)
     def translate_output_property(self, prop):
         return tables._CAMEL_TO_SNAKE_CASE_TABLE.get(prop) or prop
 

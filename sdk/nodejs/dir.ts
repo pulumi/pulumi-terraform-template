@@ -2,20 +2,12 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as utilities from "./utilities";
 
 /**
- * Renders a directory containing templates into a separate directory of
- * corresponding rendered files.
- * 
- * `template_dir` is similar to [`template_file`](../d/file.html) but it walks
- * a given source directory and treats every file it encounters as a template,
- * rendering it to a corresponding file in the destination directory.
- * 
- * ~> **Note** When working with local files, Terraform will detect the resource
- * as having been deleted each time a configuration is applied on a new machine
- * where the destination dir is not present and will generate a diff to create
- * it. This may cause "noise" in diffs in environments where configurations are
- * routinely applied by many different users or within automation systems.
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/r/dir.html.markdown.
  */
 export class Dir extends pulumi.CustomResource {
     /**
@@ -26,24 +18,38 @@ export class Dir extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: DirState): Dir {
-        return new Dir(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: DirState, opts?: pulumi.CustomResourceOptions): Dir {
+        return new Dir(name, <any>state, { ...opts, id: id });
+    }
+
+    /** @internal */
+    public static readonly __pulumiType = 'terraform-template:index/dir:Dir';
+
+    /**
+     * Returns true if the given object is an instance of Dir.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is Dir {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === Dir.__pulumiType;
     }
 
     /**
      * Path to the directory where the templated files will be written.
      */
-    public readonly destinationDir: pulumi.Output<string>;
+    public readonly destinationDir!: pulumi.Output<string>;
     /**
      * Path to the directory where the files to template reside.
      */
-    public readonly sourceDir: pulumi.Output<string>;
+    public readonly sourceDir!: pulumi.Output<string>;
     /**
      * Variables for interpolation within the template. Note
      * that variables must all be primitives. Direct references to lists or maps
      * will cause a validation error.
      */
-    public readonly vars: pulumi.Output<{[key: string]: any} | undefined>;
+    public readonly vars!: pulumi.Output<{[key: string]: any} | undefined>;
 
     /**
      * Create a Dir resource with the given unique name, arguments, and options.
@@ -56,7 +62,7 @@ export class Dir extends pulumi.CustomResource {
     constructor(name: string, argsOrState?: DirArgs | DirState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state: DirState = argsOrState as DirState | undefined;
+            const state = argsOrState as DirState | undefined;
             inputs["destinationDir"] = state ? state.destinationDir : undefined;
             inputs["sourceDir"] = state ? state.sourceDir : undefined;
             inputs["vars"] = state ? state.vars : undefined;
@@ -72,7 +78,14 @@ export class Dir extends pulumi.CustomResource {
             inputs["sourceDir"] = args ? args.sourceDir : undefined;
             inputs["vars"] = args ? args.vars : undefined;
         }
-        super("terraform-template:index/dir:Dir", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(Dir.__pulumiType, name, inputs, opts);
     }
 }
 

@@ -2,6 +2,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as utilities from "./utilities";
 
 export class CloudInitConfig extends pulumi.CustomResource {
     /**
@@ -12,17 +15,31 @@ export class CloudInitConfig extends pulumi.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param state Any extra arguments used during the lookup.
      */
-    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: CloudInitConfigState): CloudInitConfig {
-        return new CloudInitConfig(name, <any>state, { id });
+    public static get(name: string, id: pulumi.Input<pulumi.ID>, state?: CloudInitConfigState, opts?: pulumi.CustomResourceOptions): CloudInitConfig {
+        return new CloudInitConfig(name, <any>state, { ...opts, id: id });
     }
 
-    public readonly base64Encode: pulumi.Output<boolean | undefined>;
-    public readonly gzip: pulumi.Output<boolean | undefined>;
-    public readonly parts: pulumi.Output<{ content: string, contentType?: string, filename?: string, mergeType?: string }[]>;
+    /** @internal */
+    public static readonly __pulumiType = 'terraform-template:index/cloudInitConfig:CloudInitConfig';
+
+    /**
+     * Returns true if the given object is an instance of CloudInitConfig.  This is designed to work even
+     * when multiple copies of the Pulumi SDK have been loaded into the same process.
+     */
+    public static isInstance(obj: any): obj is CloudInitConfig {
+        if (obj === undefined || obj === null) {
+            return false;
+        }
+        return obj['__pulumiType'] === CloudInitConfig.__pulumiType;
+    }
+
+    public readonly base64Encode!: pulumi.Output<boolean | undefined>;
+    public readonly gzip!: pulumi.Output<boolean | undefined>;
+    public readonly parts!: pulumi.Output<outputs.CloudInitConfigPart[]>;
     /**
      * rendered cloudinit configuration
      */
-    public /*out*/ readonly rendered: pulumi.Output<string>;
+    public /*out*/ readonly rendered!: pulumi.Output<string>;
 
     /**
      * Create a CloudInitConfig resource with the given unique name, arguments, and options.
@@ -35,7 +52,7 @@ export class CloudInitConfig extends pulumi.CustomResource {
     constructor(name: string, argsOrState?: CloudInitConfigArgs | CloudInitConfigState, opts?: pulumi.CustomResourceOptions) {
         let inputs: pulumi.Inputs = {};
         if (opts && opts.id) {
-            const state: CloudInitConfigState = argsOrState as CloudInitConfigState | undefined;
+            const state = argsOrState as CloudInitConfigState | undefined;
             inputs["base64Encode"] = state ? state.base64Encode : undefined;
             inputs["gzip"] = state ? state.gzip : undefined;
             inputs["parts"] = state ? state.parts : undefined;
@@ -50,7 +67,14 @@ export class CloudInitConfig extends pulumi.CustomResource {
             inputs["parts"] = args ? args.parts : undefined;
             inputs["rendered"] = undefined /*out*/;
         }
-        super("terraform-template:index/cloudInitConfig:CloudInitConfig", name, inputs, opts);
+        if (!opts) {
+            opts = {}
+        }
+
+        if (!opts.version) {
+            opts.version = utilities.getVersion();
+        }
+        super(CloudInitConfig.__pulumiType, name, inputs, opts);
     }
 }
 
@@ -60,7 +84,7 @@ export class CloudInitConfig extends pulumi.CustomResource {
 export interface CloudInitConfigState {
     readonly base64Encode?: pulumi.Input<boolean>;
     readonly gzip?: pulumi.Input<boolean>;
-    readonly parts?: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }>[]>;
+    readonly parts?: pulumi.Input<pulumi.Input<inputs.CloudInitConfigPart>[]>;
     /**
      * rendered cloudinit configuration
      */
@@ -73,5 +97,5 @@ export interface CloudInitConfigState {
 export interface CloudInitConfigArgs {
     readonly base64Encode?: pulumi.Input<boolean>;
     readonly gzip?: pulumi.Input<boolean>;
-    readonly parts: pulumi.Input<pulumi.Input<{ content: pulumi.Input<string>, contentType?: pulumi.Input<string>, filename?: pulumi.Input<string>, mergeType?: pulumi.Input<string> }>[]>;
+    readonly parts: pulumi.Input<pulumi.Input<inputs.CloudInitConfigPart>[]>;
 }

@@ -2,6 +2,7 @@ PROJECT_NAME := Terraform Template Package
 include build/common.mk
 
 PACK             := terraform-template
+TFPROVIDER       := template
 PACKDIR          := sdk
 PROJECT          := github.com/pulumi/pulumi-terraform-template
 NODE_MODULE_NAME := @pulumi/terraform-template
@@ -11,17 +12,18 @@ PROVIDER        := pulumi-resource-${PACK}
 VERSION         := $(shell scripts/get-version)
 PYPI_VERSION    := $(shell scripts/get-py-version)
 
-GOMETALINTERBIN=gometalinter
-GOMETALINTER=${GOMETALINTERBIN} --config=Gometalinter.json
-
 TESTPARALLELISM := 10
+
+tfgen::
+	go install -ldflags "-X github.com/pulumi/pulumi-${PACK}/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
+
+provider::
+	go install -ldflags "-X github.com/pulumi/pulumi-${PACK}/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
 
 # NOTE: Since the plugin is published using the nodejs style semver version
 # We set the PLUGIN_VERSION to be the same as the version we use when building
 # the provider (e.g. x.y.z-dev-... instead of x.y.zdev...)
-build::
-	go install -ldflags "-X github.com/pulumi/pulumi-terraform-template/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${TFGEN}
-	go install -ldflags "-X github.com/pulumi/pulumi-terraform-template/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
+build:: provider tfgen
 	for LANGUAGE in "nodejs" "python" "go" ; do \
 		$(TFGEN) $$LANGUAGE --overlays overlays/$$LANGUAGE/ --out ${PACKDIR}/$$LANGUAGE/ || exit 3 ; \
 	done
@@ -32,7 +34,7 @@ build::
 		sed -i.bak "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json
 	cd ${PACKDIR}/python/ && \
 		if [ $$(command -v pandoc) ]; then \
-			pandoc --from=markdown --to=rst --output=README.rst ../../README.md; \
+			pandoc --from=markdown-smart --to=rst-smart --output=README.rst ../../README.md; \
 		else \
 			echo "warning: pandoc not found, not generating README.rst"; \
 			echo "" > README.rst; \
@@ -44,7 +46,7 @@ build::
 		cd ./bin && $(PYTHON) setup.py build sdist
 
 lint::
-	$(GOMETALINTER) ./cmd/... resources.go | sort ; exit "$${PIPESTATUS[0]}"
+	golangci-lint run --skip-dirs sdk/go
 
 install::
 	GOBIN=$(PULUMI_BIN) go install -ldflags "-X github.com/pulumi/pulumi-terraform-template/pkg/version.Version=${VERSION}" ${PROJECT}/cmd/${PROVIDER}
@@ -68,7 +70,8 @@ publish_tgz:
 .PHONY: publish_packages
 publish_packages:
 	$(call STEP_MESSAGE)
-	./scripts/publish_packages.sh
+	$$(go env GOPATH)/src/github.com/pulumi/scripts/ci/publish-tfgen-package .
+	$$(go env GOPATH)/src/github.com/pulumi/scripts/ci/build-package-docs.sh ${PACK}
 
 .PHONY: check_clean_worktree
 check_clean_worktree:
