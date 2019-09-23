@@ -49,16 +49,11 @@ func templateDataSource(mod string, res string) tokens.ModuleMember {
 	return templateMember(mod+"/"+fn, res)
 }
 
-// templateResource manufactures a standard resource token given a module and resource name. It automatically uses the template
-// package and names the file by simply lower casing the resource's first character.
+// templateResource manufactures a standard resource token given a module and resource name. It automatically uses the
+// template package and names the file by simply lower casing the resource's first character.
 func templateResource(mod string, res string) tokens.Type {
 	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
 	return templateType(mod+"/"+fn, res)
-}
-
-// boolRef returns a reference to the bool argument.
-func boolRef(b bool) *bool {
-	return &b
 }
 
 // Provider returns additional overlaid schema and metadata associated with the template package.
@@ -82,15 +77,15 @@ func Provider() tfbridge.ProviderInfo {
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			DevDependencies: map[string]string{
-				"@types/node": "^8.0.25", // so we can access strongly typed node definitions.
+				"@types/node": "^8.0.0", // so we can access strongly typed node definitions.
 			},
 			Dependencies: map[string]string{
-				"@pulumi/pulumi": "^0.15.0",
+				"@pulumi/pulumi": "^1.0.0",
 			},
 		},
 		Python: &tfbridge.PythonInfo{
 			Requires: map[string]string{
-				"pulumi": ">=0.15.0,<0.16.0",
+				"pulumi": ">=1.0.0,<2.0.0",
 			},
 		},
 	}

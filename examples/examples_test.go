@@ -26,6 +26,9 @@ func TestExamples(t *testing.T) {
 		Dependencies: []string{
 			"@pulumi/terraform-template",
 		},
+		Overrides: map[string]string{
+			"minipass": "2.7.0",
+		},
 	})
 
 	examples := []integration.ProgramTestOptions{

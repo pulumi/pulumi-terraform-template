@@ -8,3 +8,7 @@ export * from "./file";
 export * from "./getCloudInitConfig";
 export * from "./getFile";
 export * from "./provider";
+
+// Export sub-modules:
+import * as types from "./types/index";
+export {types};

@@ -8,18 +8,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/go/pulumi"
 )
 
-// Renders a directory containing templates into a separate directory of
-// corresponding rendered files.
-// 
-// `template_dir` is similar to [`template_file`](../d/file.html) but it walks
-// a given source directory and treats every file it encounters as a template,
-// rendering it to a corresponding file in the destination directory.
-// 
-// ~> **Note** When working with local files, Terraform will detect the resource
-// as having been deleted each time a configuration is applied on a new machine
-// where the destination dir is not present and will generate a diff to create
-// it. This may cause "noise" in diffs in environments where configurations are
-// routinely applied by many different users or within automation systems.
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/r/dir.html.markdown.
 type Dir struct {
 	s *pulumi.ResourceState
 }
@@ -69,12 +58,12 @@ func GetDir(ctx *pulumi.Context,
 
 // URN is this resource's unique name assigned by Pulumi.
 func (r *Dir) URN() *pulumi.URNOutput {
-	return r.s.URN
+	return r.s.URN()
 }
 
 // ID is this resource's unique identifier assigned by its provider.
 func (r *Dir) ID() *pulumi.IDOutput {
-	return r.s.ID
+	return r.s.ID()
 }
 
 // Path to the directory where the templated files will be written.

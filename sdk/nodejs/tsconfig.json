@@ -1,11 +1,16 @@
 {
     "compilerOptions": {
         "outDir": "bin",
-        "target": "es6",
+        "target": "es2016",
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "stripInternal": true,
+        "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true
     },
     "files": [
         "cloudInitConfig.ts",
@@ -14,7 +19,11 @@
         "getCloudInitConfig.ts",
         "getFile.ts",
         "index.ts",
-        "provider.ts"
+        "provider.ts",
+        "types/index.ts",
+        "types/input.ts",
+        "types/output.ts",
+        "utilities.ts"
     ]
 }
 

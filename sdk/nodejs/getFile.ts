@@ -2,17 +2,29 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as utilities from "./utilities";
 
 /**
- * Renders a template from a file.
+ * > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/d/file.html.markdown.
  */
-export function getFile(args?: GetFileArgs, opts?: pulumi.InvokeOptions): Promise<GetFileResult> {
+export function getFile(args?: GetFileArgs, opts?: pulumi.InvokeOptions): Promise<GetFileResult> & GetFileResult {
     args = args || {};
-    return pulumi.runtime.invoke("terraform-template:index/getFile:getFile", {
+    if (!opts) {
+        opts = {}
+    }
+
+    if (!opts.version) {
+        opts.version = utilities.getVersion();
+    }
+    const promise: Promise<GetFileResult> = pulumi.runtime.invoke("terraform-template:index/getFile:getFile", {
         "filename": args.filename,
         "template": args.template,
         "vars": args.vars,
     }, opts);
+
+    return pulumi.utils.liftProperties(promise, opts);
 }
 
 /**
@@ -21,14 +33,14 @@ export function getFile(args?: GetFileArgs, opts?: pulumi.InvokeOptions): Promis
 export interface GetFileArgs {
     /**
      * _Deprecated, please use `template` instead_. The filename for
-     * the template. Use [path variables](/docs/configuration/interpolation.html#path-variables) to make
+     * the template. Use [path variables](https://www.terraform.io/docs/configuration/interpolation.html#path-variables) to make
      * this path relative to different path roots.
      */
     readonly filename?: string;
     /**
      * The contents of the template. These can be loaded
      * from a file on disk using the [`file()` interpolation
-     * function](/docs/configuration/interpolation.html#file_path_).
+     * function](https://www.terraform.io/docs/configuration/interpolation.html#file_path_).
      */
     readonly template?: string;
     /**
@@ -43,10 +55,19 @@ export interface GetFileArgs {
  * A collection of values returned by getFile.
  */
 export interface GetFileResult {
+    readonly filename?: string;
     /**
      * The final rendered template.
      */
     readonly rendered: string;
+    /**
+     * See Argument Reference above.
+     */
+    readonly template?: string;
+    /**
+     * See Argument Reference above.
+     */
+    readonly vars?: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.
      */

@@ -3,8 +3,9 @@
 # *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 # Export this package's modules as members:
-from cloud_init_config import *
-from dir import *
-from file import *
-from get_cloud_init_config import *
-from get_file import *
+from .cloud_init_config import *
+from .dir import *
+from .file import *
+from .get_cloud_init_config import *
+from .get_file import *
+from .provider import *

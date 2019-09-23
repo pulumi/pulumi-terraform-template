@@ -8,6 +8,8 @@ import (
 )
 
 // Renders a multi-part cloud-init config from source files.
+//
+// > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/d/cloudinit_config.html.markdown.
 func LookupCloudInitConfig(ctx *pulumi.Context, args *GetCloudInitConfigArgs) (*GetCloudInitConfigResult, error) {
 	inputs := make(map[string]interface{})
 	if args != nil {
@@ -20,6 +22,9 @@ func LookupCloudInitConfig(ctx *pulumi.Context, args *GetCloudInitConfigArgs) (*
 		return nil, err
 	}
 	return &GetCloudInitConfigResult{
+		Base64Encode: outputs["base64Encode"],
+		Gzip: outputs["gzip"],
+		Parts: outputs["parts"],
 		Rendered: outputs["rendered"],
 		Id: outputs["id"],
 	}, nil
@@ -37,6 +42,9 @@ type GetCloudInitConfigArgs struct {
 
 // A collection of values returned by getCloudInitConfig.
 type GetCloudInitConfigResult struct {
+	Base64Encode interface{}
+	Gzip interface{}
+	Parts interface{}
 	// The final rendered multi-part cloudinit config.
 	Rendered interface{}
 	// id is the provider-assigned unique ID for this managed resource.
