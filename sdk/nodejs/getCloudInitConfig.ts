@@ -7,6 +7,8 @@ import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 /**
+ * Renders a multi-part cloud-init config from source files.
+ *
  * > This content is derived from https://github.com/terraform-providers/terraform-provider-template/blob/master/website/docs/d/cloudinit_config.html.markdown.
  */
 export function getCloudInitConfig(args: GetCloudInitConfigArgs, opts?: pulumi.InvokeOptions): Promise<GetCloudInitConfigResult> & GetCloudInitConfigResult {
